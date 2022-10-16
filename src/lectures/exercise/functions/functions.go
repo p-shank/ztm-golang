@@ -17,8 +17,42 @@
 
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math/rand"
+)
 
 func main() {
+	greetPerson("shank")
+	fmt.Println(returnMessage())
 
+	var num1 int = returnNumber()
+	var num2, num3 int = returnNumbers()
+
+	fmt.Println("Number 1", num1)
+	fmt.Println("Number 2", num2)
+	fmt.Println("Number 3", num3)
+
+	fmt.Println("Addition of numbers", add(num1, num2, num3))
+
+}
+
+func greetPerson(name string) {
+	fmt.Println("Hi ", name)
+}
+
+func returnMessage() string {
+	return "Hello"
+}
+
+func returnNumber() int {
+	return rand.Intn(100)
+}
+
+func returnNumbers() (int, int) {
+	return rand.Intn(100), rand.Intn(100)
+}
+
+func add(num1, num2, num3 int) int {
+	return num1 + num2 + num3
 }

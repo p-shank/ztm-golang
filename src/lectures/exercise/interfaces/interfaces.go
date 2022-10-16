@@ -21,6 +21,43 @@ package main
 
 import "fmt"
 
-func main() {
+type Vichlelr interface {
+	reDirect()
+}
 
+type Motorcycles struct {
+	name string
+}
+
+type Cars struct {
+	name string
+}
+type Trucks struct {
+	name string
+}
+
+func (m Motorcycles) reDirect() {
+	fmt.Println("small lift, model:", m.name)
+}
+
+func (c Cars) reDirect() {
+	fmt.Println("standard lift, model:", c.name)
+}
+
+func (t Trucks) reDirect() {
+	fmt.Println("large lift, model:", t.name)
+}
+
+func selectLift(i Vichlelr) {
+	i.reDirect()
+}
+
+func main() {
+	motorcycle := Motorcycles{"honda"}
+	car := Cars{"toyota"}
+	truck := Trucks{"tata"}
+
+	selectLift(motorcycle)
+	selectLift(car)
+	selectLift(truck)
 }

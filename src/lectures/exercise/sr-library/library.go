@@ -19,8 +19,77 @@
 
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
+
+const (
+	CHECKED_IN  = true
+	CHECKED_OUT = false
+)
+
+type BookStatus bool
+
+type Book struct {
+	name           string
+	checkOutStatus BookStatus
+	inTime         time.Time
+	outTime        time.Time
+}
+
+type Member struct {
+	name string
+}
+
+type Library struct {
+	members         []Member
+	books           []Book
+	booksCheckedOut []Book
+}
+
+func createBooks() []Book {
+	books := []Book{
+		{"Java", CHECKED_IN, time.Now(), time.Time{}},
+		{"C++", CHECKED_IN, time.Now(), time.Time{}},
+		{"Python", CHECKED_OUT, time.Time{}, time.Now()},
+		{"Angular", CHECKED_OUT, time.Time{}, time.Now()},
+	}
+	return books
+}
+
+func createMembers() []Member {
+	member := []Member{
+		{"Naruto"},
+		{"Goku"},
+		{"Luffy"},
+	}
+	return member
+}
 
 func main() {
+	library := Library{
+		createMembers(),
+		createBooks(),
+		nil,
+	}
+	fmt.Println(library)
 
+	checkOut(&library.books[1])
+	library.booksCheckedOut = append(library.booksCheckedOut, library.books[1])
+	fmt.Println(library)
+
+	checkIn(&library.books[3])
+	fmt.Println(library)
+
+}
+
+func checkOut(book *Book) {
+	book.outTime = time.Now()
+	book.checkOutStatus = CHECKED_OUT
+}
+
+func checkIn(book *Book) {
+	book.inTime = time.Now()
+	book.checkOutStatus = CHECKED_IN
 }

@@ -18,8 +18,46 @@
 
 package main
 
-import "fmt"
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"strings"
+)
 
 func main() {
 
+	commands := make([]string, 0, 5)
+	scanner := bufio.NewScanner(os.Stdin)
+
+	for {
+		fmt.Printf("enter text: ")
+		scanner.Scan()
+		text := scanner.Text()
+		if len(text) > 0 {
+			if strings.ToLower(text) == "q" {
+				fmt.Println("exiting the program")
+				break
+			}
+			commands = append(commands, text)
+			printMessage(text)
+		} else {
+			fmt.Println("enter a valid text")
+		}
+	}
+
+	fmt.Println("no of commands: ", len(commands))
+}
+
+func printMessage(text string) {
+	textMesage := map[string]string{
+		"hi":  "hello how are you",
+		"bye": "bye take care",
+	}
+
+	if val, ok := textMesage[text]; ok {
+		fmt.Println(val)
+	} else {
+		fmt.Println("please enter something else")
+	}
 }

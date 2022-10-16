@@ -19,6 +19,22 @@ package main
 
 import "fmt"
 
-func main() {
+type Rectangle struct {
+	length  int
+	breadth int
+}
 
+func calculateArea(rect Rectangle) {
+	area := rect.length * rect.breadth
+	perimeter := 2 * (rect.length + rect.breadth)
+	fmt.Println("Area :", area)
+	fmt.Println("Perimeter :", perimeter)
+}
+
+func main() {
+	rect := Rectangle{4, 5}
+	calculateArea(rect)
+	rect.length = rect.length * 2
+	rect.breadth = rect.breadth * 2
+	calculateArea(rect)
 }

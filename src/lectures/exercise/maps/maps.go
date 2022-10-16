@@ -29,6 +29,54 @@ const (
 	Retired     = 3
 )
 
+func displayServer(servers []string, serversRegisterd map[string]int) {
+	var numberOfServers int = len(servers)
+	serverStatus := make(map[int]int)
+
+	serverStatusToName := map[int]string{
+		0: "Online",
+		1: "Offline",
+		2: "Maintenance",
+		3: "Retired",
+	}
+
+	for _, value := range serversRegisterd {
+		_, found := serverStatus[value]
+		if !found {
+			serverStatus[value] = 1
+		} else {
+			serverStatus[value] = serverStatus[value] + 1
+		}
+	}
+
+	fmt.Println("Number of servers", numberOfServers)
+
+	for key, value := range serverStatus {
+		fmt.Println(serverStatusToName[key], "servers", value)
+	}
+}
+
 func main() {
 	servers := []string{"darkstar", "aiur", "omicron", "w359", "baseline"}
+
+	serverRegisterd := map[string]int{
+		"darkstar": Online,
+		"aiur":     Online,
+		"omicron":  Online,
+		"w359":     Online,
+		"baseline": Online,
+	}
+
+	displayServer(servers, serverRegisterd)
+
+	serverRegisterd["darkstar"] = Retired
+	serverRegisterd["aiur"] = Offline
+
+	displayServer(servers, serverRegisterd)
+
+	for key, _ := range serverRegisterd {
+		serverRegisterd[key] = Maintenance
+	}
+
+	displayServer(servers, serverRegisterd)
 }

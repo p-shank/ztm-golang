@@ -18,6 +18,34 @@ package main
 
 import "fmt"
 
-func main() {
+type Item struct {
+	itemName string
+	status   bool
+}
 
+func createItems() []Item {
+	items := []Item{
+		{"TV", true},
+		{"Washing Machine", true},
+		{"PS", true},
+		{"Fan", true},
+	}
+
+	return items
+}
+
+func checkout(items []Item) {
+
+	for i := 0; i < len(items); i++ {
+		items[i].status = false
+		fmt.Println(items)
+	}
+
+}
+
+func main() {
+	items := createItems()
+	items[0].status = false
+	fmt.Println(items)
+	checkout(items)
 }
