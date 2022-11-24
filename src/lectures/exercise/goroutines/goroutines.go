@@ -28,7 +28,6 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"io"
 	"os"
 	"strconv"
 	"time"
@@ -36,4 +35,42 @@ import (
 
 func main() {
 	files := []string{"num1.txt", "num2.txt", "num3.txt", "num4.txt", "num5.txt"}
+	totalSum := 0
+
+	channel := make(chan int, 5)
+
+	for i := 0; i < len(files); i++ {
+		go readFile(files[i], channel)
+	}
+
+	for {
+		select {
+		case sum := <-channel:
+			totalSum += sum
+		case <-time.After(100 * time.Millisecond):
+			fmt.Println(totalSum)
+			return
+		}
+	}
+}
+
+func readFile(fileName string, channel chan<- int) {
+
+	f, err := os.Open(fileName)
+	scanner := bufio.NewScanner(f)
+	totalSum := 0
+
+	if err != nil {
+		fmt.Println(fileName + " not found")
+	}
+
+	defer f.Close()
+
+	for scanner.Scan() {
+		number, err := strconv.Atoi(scanner.Text())
+		if err == nil {
+			totalSum += number
+		}
+	}
+	channel <- totalSum
 }

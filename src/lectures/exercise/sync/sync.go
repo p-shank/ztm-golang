@@ -19,7 +19,57 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
+	"strings"
+	"sync"
+	"unicode"
 )
 
-func main() {}
+type Count struct {
+	count int
+	sync.Mutex
+}
+
+func countLetters(word string) int {
+	letters := 0
+	for _, ch := range word {
+		if unicode.IsLetter(ch) {
+			letters += 1
+		}
+	}
+	return letters
+}
+
+func main() {
+
+	scanner := bufio.NewScanner(os.Stdin)
+	totalLetters := Count{}
+
+	var wg sync.WaitGroup
+
+	for {
+		if scanner.Scan() {
+			text := scanner.Text()
+			words := strings.Fields(text)
+			for _, word := range words {
+				wordCopy := word
+				wg.Add(1)
+				go func() {
+					totalLetters.Lock()
+					defer totalLetters.Unlock()
+					defer wg.Done()
+					totalLetters.count += countLetters(wordCopy)
+				}()
+			}
+		} else {
+
+			break
+		}
+	}
+
+	wg.Wait()
+	fmt.Println("Total Leters: ", totalLetters.count)
+
+}
